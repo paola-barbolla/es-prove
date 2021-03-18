@@ -40,4 +40,24 @@ app.post("/comments", (req, res) => {
         })
 })
 
+app.post("/comments", (req, res) => {
+    const id = req.body.id;
+    fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
+        .then(response => response.json())
+        .then(data => {
+            const d = data.filter(p => {
+                const body = p.body
+                const parole = body.split(" ")
+                const n = parole.length
+                if (n % 2 == 0){
+                    return false
+                } else {
+                    return true
+                }
+            })
+            const ids = d.map( p => p.id)
+            res.json({ids: ids})
+        })
+})
+
 app.listen(8080, () => console.log("server listening on port 8080"))
